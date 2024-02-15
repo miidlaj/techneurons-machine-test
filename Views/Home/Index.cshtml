@@ -3,9 +3,8 @@
 
 <div class="overflow-x-auto w-full">
 
-    <h1 class="text-center">Employee</h1>
+    @* Table *@
     <table class="table">
-
         <thead>
             <tr>
                 <th>
@@ -40,12 +39,10 @@
         </thead>
         <tbody>
 
-
             @if (Model.EmployeeList.Any())
             {
                 @foreach (var e in Model.EmployeeList)
                 {
-
                     <tr>
                         <th>
                             <label>
@@ -76,13 +73,14 @@
                         <td>@e.CreatedAt</td>
 
                         <th>
-                         <button onClick="populateForm(@e.Id)" class="btn btn-ghost btn-xs">Update</button>
-@{
-    string dialogId = $"{e.Id}_delete";
-}
-<button onclick="document.getElementById('@dialogId').showModal()" class="btn btn-ghost btn-xs bg-error text-white">Delete</button>
+                            <button onClick="populateForm(@e.Id)" class="btn btn-ghost btn-xs">Update</button>
+                            @{
+                                string dialogId = $"{e.Id}_delete";
+                            }
+                            <button onclick="document.getElementById('@dialogId').showModal()"
+                                class="btn btn-ghost btn-xs bg-error text-white">Delete</button>
 
-<dialog id="@dialogId" class="modal">
+                            <dialog id="@dialogId" class="modal">
 
                                 <div class="modal-box">
                                     <h3 class="font-bold text-lg">Delete Confirmation</h3>
@@ -110,6 +108,8 @@
     </table>
     <div class="join">
 
+        @* Pagination *@
+
         @if (Model.PageIndex > 1)
         {
             <a class="join-item btn" asp-action="Index" asp-route-pageIndex="@(Model.PageIndex - 1)">Prev</a>
@@ -125,9 +125,6 @@
         {
             <a class="join-item btn" asp-action="Index" asp-route-pageIndex="@(Model.PageIndex + 1)">Next</a>
         }
-
-
-
     </div>
 
 </div>

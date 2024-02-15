@@ -13,9 +13,10 @@ namespace Todo.Controllers
             _context = context;
         }
 
+        // Home Page
         public IActionResult Index(int pageIndex = 1, int pageSize = 5, string sortOrder = "")
         {
-            ViewData["NameSortParam"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewData["NameSortParam"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
 
             var totalCount = _context.Employees.Count();
 
@@ -51,6 +52,7 @@ namespace Todo.Controllers
             return View(viewModel);
         }
 
+        // For Updating 
         [HttpGet]
         public JsonResult PopulateForm(int id)
         {
@@ -58,7 +60,7 @@ namespace Todo.Controllers
             return Json(todo);
         }
 
-
+        // Creating 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Index(Employee employee)
@@ -66,7 +68,6 @@ namespace Todo.Controllers
 
             if (ModelState.IsValid)
             {
-
                 employee.CreatedAt = DateTime.UtcNow;
 
                 _context.Employees.Add(employee);
@@ -90,6 +91,7 @@ namespace Todo.Controllers
             return View(defaultEmployeeViewModel);
         }
 
+        // Deleting
         [HttpPost]
         public JsonResult Delete(int id)
         {
@@ -102,6 +104,7 @@ namespace Todo.Controllers
             return Json(new { });
         }
 
+        // Updating
         [HttpPost]
         public IActionResult Update(Employee employee)
         {

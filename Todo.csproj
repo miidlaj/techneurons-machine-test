@@ -13,6 +13,8 @@
     <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.2" />
   </ItemGroup>
+
+  // Added for compiling tailwind styles
   <Target Name="Tailwind" BeforeTargets="Build">
     <Exec Command="npm i" />
     <Exec Command="npm run css:build" />

@@ -8,6 +8,7 @@ namespace Todo.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            // Datasource (sqlite is in the root folder)
             optionsBuilder.UseSqlite("Data Source=db.sqlite");
         }
     }
