@@ -5,14 +5,34 @@
 
     <h1 class="text-center">Employee</h1>
     <table class="table">
-        
+
         <thead>
             <tr>
                 <th>
                     Select
                 </th>
                 <th>Id</th>
-                <th>Name</th>
+
+                <th>
+                    <a class="flex gap-2" asp-action="Index" asp-route-sortOrder="@ViewData["NameSortParam"]">Name
+                        @if (ViewData["NameSortParam"].ToString() == "name_desc")
+                        {
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                class="lucide lucide-chevron-down">
+                                <path d="m6 9 6 6 6-6" />
+                            </svg>
+                        }
+                        else
+                        {
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                class="lucide lucide-chevron-up">
+                                <path d="m18 15-6-6-6 6" />
+                            </svg>
+                        }
+                    </a>
+                </th>
                 <th>Description</th>
                 <th>Created At</th>
                 <th>Actions</th>
@@ -56,12 +76,14 @@
                         <td>@e.CreatedAt</td>
 
                         <th>
-                            <button onClick="populateForm(@e.Id)" class="btn btn-ghost btn-xs">Update</button>
-                            <button onclick="delete_modal.showModal()"
-                                class="btn btn-ghost btn-xs bg-error text-white">Delete</button>
+                         <button onClick="populateForm(@e.Id)" class="btn btn-ghost btn-xs">Update</button>
+@{
+    string dialogId = $"{e.Id}_delete";
+}
+<button onclick="document.getElementById('@dialogId').showModal()" class="btn btn-ghost btn-xs bg-error text-white">Delete</button>
 
+<dialog id="@dialogId" class="modal">
 
-                            <dialog id="delete_modal" class="modal">
                                 <div class="modal-box">
                                     <h3 class="font-bold text-lg">Delete Confirmation</h3>
                                     <p class="py-4">Are you sure want to delete this item?</p>

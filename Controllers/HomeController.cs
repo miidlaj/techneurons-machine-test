@@ -13,22 +13,36 @@ namespace Todo.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 5)
+        public IActionResult Index(int pageIndex = 1, int pageSize = 5, string sortOrder = "")
         {
+            ViewData["NameSortParam"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+
             var totalCount = _context.Employees.Count();
 
             var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
 
             pageIndex = Math.Max(1, Math.Min(totalPages, pageIndex));
 
-            var employees = _context.Employees
+            IQueryable<Employee> employees = _context.Employees;
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    employees = employees.OrderByDescending(e => e.Name);
+                    break;
+                default:
+                    employees = employees.OrderBy(e => e.Name);
+                    break;
+            }
+
+            var pagedEmployees = employees
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize)
                 .ToList();
 
             var viewModel = new EmployeeViewModel
             {
-                EmployeeList = employees,
+                EmployeeList = pagedEmployees,
                 PageIndex = pageIndex,
                 PageSize = pageSize,
                 TotalCount = totalCount
@@ -59,16 +73,21 @@ namespace Todo.Controllers
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
-            return RedirectToAction(nameof(Index));
+            var defaultPageNumber = 1;
+            var defaultPageSize = 5;
 
-            var taskListViewModel = new EmployeeViewModel
+            var defaultEmployeeList = _context.Employees
+                .OrderBy(e => e.Id)
+                .Skip((defaultPageNumber - 1) * defaultPageSize)
+                .Take(defaultPageSize)
+                .ToList();
+
+            var defaultEmployeeViewModel = new EmployeeViewModel
             {
-                EmployeeList = _context.Employees.ToList()
+                EmployeeList = defaultEmployeeList
             };
-            return View(taskListViewModel);
 
-
-
+            return View(defaultEmployeeViewModel);
         }
 
         [HttpPost]
