@@ -1,0 +1,111 @@
+﻿@model EmployeeViewModel
+
+
+<div class="overflow-x-auto w-full">
+
+    <h1 class="text-center">Employee</h1>
+    <table class="table">
+        
+        <thead>
+            <tr>
+                <th>
+                    Select
+                </th>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+
+
+            @if (Model.EmployeeList.Any())
+            {
+                @foreach (var e in Model.EmployeeList)
+                {
+
+                    <tr>
+                        <th>
+                            <label>
+                                <input type="checkbox" class="checkbox" />
+                            </label>
+                        </th>
+
+                        <td>
+                            @e.Id
+                        </td>
+
+                        <td>
+                            <div class="flex items-center gap-3">
+                                <div class="avatar">
+                                    <div class="mask mask-squircle w-12 h-12">
+                                        <img src="https://png.pngtree.com/png-vector/20190710/ourmid/pngtree-user-vector-avatar-png-image_1541962.jpg"
+                                            alt="Avatar Tailwind CSS Component" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="font-bold">@e.Name</div>
+                                    <div class="text-sm opacity-50">India</div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td>@e.Description</td>
+                        <td>@e.CreatedAt</td>
+
+                        <th>
+                            <button onClick="populateForm(@e.Id)" class="btn btn-ghost btn-xs">Update</button>
+                            <button onclick="delete_modal.showModal()"
+                                class="btn btn-ghost btn-xs bg-error text-white">Delete</button>
+
+
+                            <dialog id="delete_modal" class="modal">
+                                <div class="modal-box">
+                                    <h3 class="font-bold text-lg">Delete Confirmation</h3>
+                                    <p class="py-4">Are you sure want to delete this item?</p>
+                                    <div class="modal-action">
+                                        <button class="btn bg-error text-white" onClick="deleteEmployee(@e.Id)">Delete</button>
+
+                                        <form method="dialog">
+                                            <button class="btn">Close</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </dialog>
+                        </th>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <p>No Employees available</p>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="join">
+
+        @if (Model.PageIndex > 1)
+        {
+            <a class="join-item btn" asp-action="Index" asp-route-pageIndex="@(Model.PageIndex - 1)">Prev</a>
+        }
+
+        @for (int i = 1; i <= Math.Ceiling(Model.TotalCount / (double)Model.PageSize); i++)
+        {
+            <a class="join-item btn @(i == Model.PageIndex ? "btn-active" : "")" asp-action="Index"
+                asp-route-pageIndex="@i">@i</a>
+        }
+
+        @if (Model.PageIndex < Math.Ceiling(Model.TotalCount / (double)Model.PageSize))
+        {
+            <a class="join-item btn" asp-action="Index" asp-route-pageIndex="@(Model.PageIndex + 1)">Next</a>
+        }
+
+
+
+    </div>
+
+</div>

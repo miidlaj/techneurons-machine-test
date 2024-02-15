@@ -1,0 +1,24 @@
+@model EmployeeViewModel
+
+<form asp-action="Index" id="form-action" method="post" role="form">
+    <div class="join">
+        <input asp-for="Employee.Id" value="0" type="hidden">
+        <div>
+            <div class="flex flex-col gap-2">
+                <input asp-for="Employee.Name" type="text" class="input input-bordered join-item" placeholder="Name" />
+                <span asp-validation-for="Employee.Name" class="text-sm text-error"></span>
+            </div>
+        </div>
+        <div>
+            <div class="flex flex-col gap-2">
+                <input asp-for="Employee.Description" type="text" class="input input-bordered join-item"
+                    placeholder="Description" />
+                <span asp-validation-for="Employee.Description" class="text-sm text-error"></span>
+            </div>
+        </div>
+        <div class="indicator">
+            <span class="indicator-item badge bg-info text-white" id="form-button-badge">new</span>
+            <button type="submit" id="form-button" class="btn join-item">Submit</button>
+        </div>
+    </div>
+</form>
